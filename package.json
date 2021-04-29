@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/sh4hids/prayertimes.git"
+    "url": "https://github.com/sh4hids/prayertiming.git"
   },
   "keywords": [
     "Prayer Times",
@@ -30,9 +30,9 @@
   "author": "Shahidul Islam Majumder <hello@shahid.pro>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sh4hids/prayertimes/issues"
+    "url": "https://github.com/sh4hids/prayertiming/issues"
   },
-  "homepage": "https://github.com/sh4hids/prayertimes#readme",
+  "homepage": "https://github.com/sh4hids/prayertiming#readme",
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/git": "^9.0.0",
