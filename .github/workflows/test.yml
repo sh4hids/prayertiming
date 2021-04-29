@@ -1,0 +1,25 @@
+name: Build & Test
+on:
+  pull_request:
+    branches:
+      - develop
+      - master
+jobs:
+  release:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Install dependencies
+        run: npm ci
+      - name: Build project
+        run: npm run build
+      - name: Run tests
+        run: npm run test
