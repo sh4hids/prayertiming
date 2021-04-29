@@ -1,23 +1,23 @@
-# prayertimes
+# prayertiming
 
 A muslim prayer times calculation node library based on coordinates.
 
 ## Installation
 
 ```bash
-$ npm i prayertimes
+$ npm i prayertiming
 ```
 
 ## Usage
 
 ```javascript
-const { getByDay, getByMonth } = require('prayertimes');
+const { getByDay, getByMonth } = require('prayertiming');
 ```
 
 or
 
 ```javascript
-import { getByDay, getByMonth } from 'prayertimes';
+import { getByDay, getByMonth } from 'prayertiming';
 ```
 
 ```javascript
