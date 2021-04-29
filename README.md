@@ -1,6 +1,6 @@
-# prayertiming
+# prayertiming [![Stars](https://img.shields.io/github/stars/sh4hids/prayertiming.svg)](https://github.com/sh4hids/prayertiming) · [![License](https://img.shields.io/github/license/sh4hids/prayertiming.svg)](https://github.com/sh4hids/prayertiming) · [![GitHub issues](https://img.shields.io/github/issues/sh4hids/prayertiming.svg?style=popout)](https://github.com/sh4hids/prayertiming/issues) · [![Build & Test](https://github.com/sh4hids/prayertiming/actions/workflows/test.yml/badge.svg)](https://travis-ci.org/sh4hids/prayertiming)
 
-A muslim prayer times calculation node library based on coordinates.
+A Muslim prayer times calculation library based on coordinates.
 
 ## Installation
 
