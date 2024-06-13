@@ -46,5 +46,5 @@ test(`calculates prayer times for ${config.lat}, ${config.long}, ${config.date}`
 });
 
 test(`should throw 'Invalid date' error`, () => {
-  expect(() => getByDay(invalidConfig)).toThrow('Invalid date');
+  expect(() => getByDay(invalidConfig)).toThrow('Invalid Date');
 });

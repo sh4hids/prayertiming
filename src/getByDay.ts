@@ -48,7 +48,7 @@ export function getByDay({
   config = {},
 }: GetByDayParams): PrayerTimesResult {
   if (!isDate(date)) {
-    throw new Error('Invalid date');
+    throw new Error('Invalid Date');
   }
 
   const dateParts: DateParts = {

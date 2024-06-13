@@ -34,7 +34,7 @@ export function getByMonth({
   config = {},
 }: GetByMonthParams): PrayerTimesResult[] {
   if (month < 0 || month > 11) {
-    throw new Error('Invalid month');
+    throw new Error('Invalid Month');
   }
 
   const days = getDaysInMonthUTC(month, year);

@@ -456,5 +456,5 @@ test(`calculates prayer times for ${config.lat}, ${config.long}, ${config.month}
 });
 
 test(`should throw 'Invalid month' error`, () => {
-  expect(() => getByMonth(invalidConfig)).toThrow('Invalid month');
+  expect(() => getByMonth(invalidConfig)).toThrow('Invalid Month');
 });

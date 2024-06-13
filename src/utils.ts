@@ -10,12 +10,14 @@ import {
 import * as DMath from './degreeMath';
 
 export function isDate(date: unknown) {
-  if (!date) {
+  if (!date || date === 'Invalid Date') {
     return false;
   }
 
   return (
-    Object.prototype.toString.call(date) === '[object Date]' && !isNaN(date)
+    date instanceof Date &&
+    Object.prototype.toString.call(date) === '[object Date]' &&
+    !Number.isNaN(date.getMonth())
   );
 }
 
