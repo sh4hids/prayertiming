@@ -1,6 +1,7 @@
-import getByDay from '../getByDay';
+import { defaultSettings } from '../config';
+import { GetByDayParams, getByDay } from '../getByDay';
 
-const config = {
+const config: GetByDayParams = {
   date: new Date('2021-04-24T05:16:54.442Z'),
   long: 90.38,
   lat: 23.75,
@@ -9,7 +10,7 @@ const config = {
   timezone: 6,
 };
 
-const invalidConfig = {
+const invalidConfig: GetByDayParams = {
   date: new Date('dsf'),
   long: 90.38,
   lat: 23.75,
@@ -17,6 +18,7 @@ const invalidConfig = {
   timeFormat: '12h',
   timezone: 6,
   config: {
+    ...defaultSettings,
     imsak: '7 min',
     dhuhr: '1 min',
   },
@@ -39,7 +41,7 @@ const expectedOutput = {
 
 const result = getByDay(config);
 
-test(`calculates prayer times for ${config.lat}, ${config.long}, ${config.date} `, () => {
+test(`calculates prayer times for ${config.lat}, ${config.long}, ${config.date}`, () => {
   expect(result).toMatchObject(expectedOutput);
 });
 

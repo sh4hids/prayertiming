@@ -1,3 +1,4 @@
+import { PrayerTimes, Settings } from './config';
 import {
   dayPortion,
   getNumValue,
@@ -8,13 +9,19 @@ import {
   riseSetAngle,
 } from './utils';
 
-export default function computePrayerTimes({
+export function computePrayerTimes({
   times,
   jDate,
   lat,
   elv,
   settings,
-}) {
+}: {
+  times: PrayerTimes;
+  jDate: number;
+  lat: number;
+  elv: number;
+  settings: Settings;
+}): PrayerTimes {
   const dayPortionTimes = dayPortion(times);
 
   const imsak = sunAngleTime({
