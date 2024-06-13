@@ -1,6 +1,7 @@
-import getByMonth from '../getByMonth';
+import { defaultSettings } from '../config';
+import { GetByMonthParams, getByMonth } from '../getByMonth';
 
-const config = {
+const config: GetByMonthParams = {
   month: 3,
   year: 2021,
   long: 90.38,
@@ -433,7 +434,7 @@ const expectedOutput = [
   },
 ];
 
-const invalidConfig = {
+const invalidConfig: GetByMonthParams = {
   month: 13,
   year: 2021,
   long: 90.38,
@@ -442,6 +443,7 @@ const invalidConfig = {
   timeFormat: '12h',
   timezone: 6,
   config: {
+    ...defaultSettings,
     imsak: '7 min',
     dhuhr: '1 min',
   },
@@ -449,10 +451,10 @@ const invalidConfig = {
 
 const result = getByMonth(config);
 
-test(`calculates prayer times for ${config.lat}, ${config.long}, ${config.date} `, () => {
+test(`calculates prayer times for ${config.lat}, ${config.long}, ${config.month} `, () => {
   expect(result).toMatchObject(expectedOutput);
 });
 
 test(`should throw 'Invalid month' error`, () => {
-  expect(() => getByMonth(invalidConfig)).toThrow('Invalid month');
+  expect(() => getByMonth(invalidConfig)).toThrow('Invalid Month');
 });

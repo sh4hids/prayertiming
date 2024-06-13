@@ -1,16 +1,29 @@
+import {
+  DateParts,
+  PrayerTimes,
+  AsrFactorType,
+  AsrFactor,
+  TimeFormat,
+  Settings,
+  FormattedPrayerTimes,
+} from './config';
 import * as DMath from './degreeMath';
 
-export function isDate(date) {
+export function isDate(date: unknown) {
+  if (!date || date === 'Invalid Date') {
+    return false;
+  }
+
   return (
-    date &&
+    date instanceof Date &&
     Object.prototype.toString.call(date) === '[object Date]' &&
-    !isNaN(date)
+    !Number.isNaN(date.getMonth())
   );
 }
 
-export function getDaysInMonthUTC(month, year) {
-  var date = new Date(Date.UTC(year, month, 1));
-  var days = [];
+export function getDaysInMonthUTC(month: number, year: number) {
+  const date = new Date(Date.UTC(year, month, 1));
+  const days: Date[] = [];
   while (date.getUTCMonth() === month) {
     days.push(new Date(date));
     date.setUTCDate(date.getUTCDate() + 1);
@@ -18,28 +31,28 @@ export function getDaysInMonthUTC(month, year) {
   return days;
 }
 
-export function gmtOffset(date) {
-  const localDate = new Date(date[0], date[1] - 1, date[2], 12, 0, 0, 0);
-  const GMTString = localDate.toGMTString();
+export function gmtOffset(date: DateParts) {
+  const localDate = new Date(date.year, date.month - 1, date.day, 12, 0, 0, 0);
+  const GMTString = localDate.toUTCString();
   const GMTDate = new Date(
     GMTString.substring(0, GMTString.lastIndexOf(' ') - 1)
   );
-  const hoursDiff = (localDate - GMTDate) / (1000 * 60 * 60);
+  const hoursDiff =
+    (localDate.getTime() - GMTDate.getTime()) / (1000 * 60 * 60);
   return hoursDiff;
 }
 
-export function getTimeZone(date) {
-  const year = date[0];
-  const t1 = gmtOffset([year, 0, 1]);
-  const t2 = gmtOffset([year, 6, 1]);
+export function getTimeZone({ year }: DateParts) {
+  const t1 = gmtOffset({ year, month: 0, day: 1 });
+  const t2 = gmtOffset({ year, month: 6, day: 1 });
   return Math.min(t1, t2);
 }
 
-export function getDst(date) {
+export function getDst(date: DateParts) {
   return Number(gmtOffset(date) !== getTimeZone(date));
 }
 
-export function getJulianDate(year, month, day) {
+export function getJulianDate(year: number, month: number, day: number) {
   let y = year;
   let m = month;
   if (month <= 2) {
@@ -59,21 +72,21 @@ export function getJulianDate(year, month, day) {
   return JD;
 }
 
-export function dayPortion(times) {
-  const portionedTimes = { ...times };
+export function dayPortion(times: PrayerTimes): PrayerTimes {
+  const portionedTimes: PrayerTimes = { ...times };
 
   Object.keys(portionedTimes).forEach((key) => {
-    portionedTimes[key] /= 24;
+    portionedTimes[key as keyof typeof portionedTimes] /= 24;
   });
 
   return portionedTimes;
 }
 
-export function getNumValue(str) {
-  return Number(String(str).split(/[^0-9.+-]/)[0]);
+export function getNumValue(str?: number | string) {
+  return Number(String(str || '').split(/[^0-9.+-]/)[0]);
 }
 
-export function sunPosition(jd) {
+export function sunPosition(jd: number) {
   const D = jd - 2451545.0 + 0.0008;
   const g = DMath.fixAngle(357.529 + 0.98560028 * D);
   const q = DMath.fixAngle(280.459 + 0.98564736 * D);
@@ -88,13 +101,25 @@ export function sunPosition(jd) {
   return { declination, equation };
 }
 
-export function midDay(time, jDate) {
+export function midDay(time: number, jDate: number) {
   const eqt = sunPosition(jDate + time).equation;
   const noon = DMath.fixHour(12 - eqt);
   return noon;
 }
 
-export function sunAngleTime({ angle, time, direction, jDate, lat }) {
+export function sunAngleTime({
+  angle,
+  time,
+  direction,
+  jDate,
+  lat,
+}: {
+  angle: number;
+  time: number;
+  direction?: string;
+  jDate: number;
+  lat: number;
+}) {
   const decl = sunPosition(jDate + time).declination;
   const noon = midDay(time, jDate);
   const t =
@@ -106,30 +131,50 @@ export function sunAngleTime({ angle, time, direction, jDate, lat }) {
   return noon + (direction === 'ccw' ? -t : t);
 }
 
-export function riseSetAngle(elv) {
+export function riseSetAngle(elv: number) {
   const angle = 0.0347 * Math.sqrt(elv); // an approximation
   return 0.833 + angle;
 }
 
-export function getAsrTime({ factor, time, jDate, lat, direction }) {
+export function getAsrTime({
+  factor,
+  time,
+  jDate,
+  lat,
+  direction,
+}: {
+  factor: number;
+  time: number;
+  jDate: number;
+  lat: number;
+  direction?: string;
+}) {
   const decl = sunPosition(jDate + time).declination;
   const angle = -DMath.arccot(factor + DMath.tan(Math.abs(lat - decl)));
   return sunAngleTime({ angle, time, direction, jDate, lat });
 }
 
-export function asrFactor(asrParam) {
-  return { Standard: 1, Hanafi: 2 }[asrParam] || getNumValue(asrParam);
+export function asrFactor(asrParam: AsrFactorType) {
+  return AsrFactor[asrParam] || getNumValue(asrParam);
 }
 
-export function isMin(arg) {
-  return String(arg).indexOf('min') !== -1;
+export function isMin(arg?: number | string) {
+  return String(arg || '').indexOf('min') !== -1;
 }
 
-export function timeDiff(time1, time2) {
+export function timeDiff(time1: number, time2: number) {
   return DMath.fixHour(time2 - time1);
 }
 
-export function nightPortion({ angle, night, settings }) {
+export function nightPortion({
+  angle,
+  night,
+  settings,
+}: {
+  angle: number;
+  night: number;
+  settings: Settings;
+}) {
   const method = settings.highLats;
   let portion = 1 / 2; // MidNight
   if (method === 'AngleBased') portion = (1 / 60) * angle;
@@ -144,6 +189,13 @@ export function adjustHLTime({
   night,
   direction,
   settings,
+}: {
+  time: number;
+  base: number;
+  angle: number;
+  night: number;
+  direction?: string;
+  settings: Settings;
 }) {
   let HLTime = time;
   const portion = nightPortion({ angle, night, settings });
@@ -155,9 +207,15 @@ export function adjustHLTime({
   return HLTime;
 }
 
-export function adjustHighLats({ times, settings }) {
+export function adjustHighLats({
+  times,
+  settings,
+}: {
+  times: PrayerTimes;
+  settings: Settings;
+}) {
   const params = { ...settings };
-  const adjustedTimes = { ...times };
+  const adjustedTimes: PrayerTimes = { ...times };
   const nightTime = timeDiff(times.sunset, times.sunrise);
 
   adjustedTimes.imsak = adjustHLTime({
@@ -197,12 +255,22 @@ export function adjustHighLats({ times, settings }) {
   return adjustedTimes;
 }
 
-export function adjustTimes({ times, settings, timeZone, long }) {
-  const params = { ...settings };
-  let adjustedTimes = { ...times };
+export function adjustTimes({
+  times,
+  settings,
+  timeZone,
+  long,
+}: {
+  times: PrayerTimes;
+  settings: Settings;
+  timeZone: number;
+  long: number;
+}) {
+  const params: Settings = { ...settings };
+  let adjustedTimes: PrayerTimes = { ...times };
 
   Object.keys(adjustedTimes).forEach((key) => {
-    adjustedTimes[key] += timeZone - long / 15;
+    adjustedTimes[key as keyof typeof adjustedTimes] += timeZone - long / 15;
   });
 
   if (params.highLats !== 'None') {
@@ -227,21 +295,26 @@ export function adjustTimes({ times, settings, timeZone, long }) {
   return adjustedTimes;
 }
 
-export function tuneTimes(times, offset) {
-  const tunedTimes = { ...times };
+export function tuneTimes(times: PrayerTimes, offset: PrayerTimes) {
+  const tunedTimes: PrayerTimes = { ...times };
 
   Object.keys(tunedTimes).forEach((key) => {
-    tunedTimes[key] += offset[key] / 60;
+    tunedTimes[key as keyof typeof tunedTimes] +=
+      (offset[key as keyof typeof offset] || 0) / 60;
   });
 
   return tunedTimes;
 }
 
-export function twoDigitsFormat(num) {
+export function twoDigitsFormat(num: number) {
   return num < 10 ? `0${num}` : num;
 }
 
-export function getFormattedTime(time, format, suffixes) {
+export function getFormattedTime(
+  time: number,
+  format: TimeFormat,
+  suffixes?: string[]
+) {
   const invalidTime = '--:--';
   const timeSuffixes = suffixes || ['am', 'pm'];
   let formattedTime = time;
@@ -260,14 +333,23 @@ export function getFormattedTime(time, format, suffixes) {
   return `${hour}:${twoDigitsFormat(minutes)}${suffix ? ` ${suffix}` : ''}`;
 }
 
-export function modifyFormats({ date, method, times, timeFormat }) {
-  const prayers = {};
+export function modifyFormats({
+  times,
+  timeFormat,
+}: {
+  times: PrayerTimes;
+  timeFormat: TimeFormat;
+}) {
+  const prayers: FormattedPrayerTimes = {
+    ...times,
+  };
 
-  const formattedTimes = { ...times };
-
-  Object.keys(formattedTimes).forEach((key) => {
-    const formatted = getFormattedTime(formattedTimes[key], timeFormat);
-    prayers[key] = formatted;
+  Object.keys(times).forEach((key) => {
+    const formatted = getFormattedTime(
+      times[key as keyof typeof times] || 0,
+      timeFormat
+    );
+    prayers[key as keyof typeof prayers] = formatted;
   });
 
   return prayers;
