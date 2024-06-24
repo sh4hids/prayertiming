@@ -2,8 +2,8 @@
   "name": "prayertiming",
   "version": "0.0.0-development",
   "description": "A small library to calculate muslim prayer times based on coordinates and timezone",
-  "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
+  "main": "lib/cjs/index.cjs",
+  "module": "lib/esm/index.mjs",
   "types": "lib/index.d.ts",
   "type": "module",
   "scripts": {

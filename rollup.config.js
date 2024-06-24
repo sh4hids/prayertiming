@@ -69,13 +69,15 @@ export default [
     output: [
       {
         dir: 'lib/esm',
-        format: 'esm',
+        format: 'es',
         preserveModules: true,
+        entryFileNames: '[name].mjs',
       },
       {
         dir: 'lib/cjs',
         format: 'cjs',
         preserveModules: true,
+        entryFileNames: '[name].cjs',
       },
     ],
     plugins: [typescript({ tsconfig: './tsconfig.rollup.json' })],
