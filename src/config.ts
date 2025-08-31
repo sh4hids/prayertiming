@@ -35,6 +35,10 @@ export const calculationMethods = {
     name: 'Jabatan Kemajuan Islam Malaysia',
     params: { fajr: 20, isha: 18 },
   },
+  MCW: {
+    name: "Moonsighting Committee Worldwide",
+    params: { fajr: 18, isha: 18}
+  }
 } as const;
 
 export type CalculationMethod = keyof typeof calculationMethods;
