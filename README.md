@@ -159,5 +159,6 @@ This method takes latitude, longitude, month, year and some other configs and re
 | MF      | Muslims of France (MF)                        | `fajr: 12, isha: 12`                                     |
 | MWL     | Muslim World League                           | `fajr: 18, isha: 17`                                     |
 | Tehran  | Institute of Geophysics, University of Tehran | `fajr: 17.7, isha: 14, maghrib: 4.5, midnight: 'Jafari'` |
+| MCW     | Moonsighting Committee Worldwide              | `fajr: 18, isha: 18`                                     |
 
 - _For Makkah fajr was 19 degrees before 1430 hijri_

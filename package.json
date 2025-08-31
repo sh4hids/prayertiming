@@ -16,7 +16,7 @@
     "check:format": "npm run prettier -- --list-different",
     "format": "npm run prettier -- --write",
     "semantic-release": "semantic-release",
-    "validate": "npm-run-all --parallel check:*"
+    "validate": "npm-run-all --parallel check:* test build"
   },
   "files": [
     "lib/*"
