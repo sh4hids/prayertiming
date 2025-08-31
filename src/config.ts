@@ -36,9 +36,9 @@ export const CalculationMethods = {
     params: { fajr: 20, isha: 18 },
   },
   MCW: {
-    name: "Moonsighting Committee Worldwide",
-    params: { fajr: 18, isha: 18}
-  }
+    name: 'Moonsighting Committee Worldwide',
+    params: { fajr: 18, isha: 18 },
+  },
 } as const;
 
 export type CalculationMethod = keyof typeof CalculationMethods;
