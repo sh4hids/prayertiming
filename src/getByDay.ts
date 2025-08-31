@@ -8,7 +8,7 @@ import {
   Settings,
   TimeFormat,
   TimeFormats,
-  calculationMethods,
+  CalculationMethods,
   defaultSettings,
   defaultTimes,
   offset,
@@ -60,7 +60,7 @@ export function getByDay({
   const daylightSaving = dst || getDst(dateParts);
   const settings = {
     ...defaultSettings,
-    ...calculationMethods[method].params,
+    ...CalculationMethods[method].params,
     ...config,
   };
   const jDate =

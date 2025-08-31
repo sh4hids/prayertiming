@@ -1,4 +1,4 @@
-export const calculationMethods = {
+export const CalculationMethods = {
   MWL: {
     name: 'Muslim World League',
     params: { fajr: 18, isha: 17 },
@@ -37,7 +37,7 @@ export const calculationMethods = {
   },
 } as const;
 
-export type CalculationMethod = keyof typeof calculationMethods;
+export type CalculationMethod = keyof typeof CalculationMethods;
 
 export type PrayerTimes = {
   imsak: number;
